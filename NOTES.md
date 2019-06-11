@@ -330,3 +330,11 @@
       [func_body]
     )
     ```
+- A single function can have many definitions (see `factorial1.exs`)
+  - The pattern usually follows a anchor case with 1 or more recursive
+    forms that end up calling the anchor case
+  - Anchor case has a known answer and/or parameters
+  - **Elixir tries forms top-down, so order matters**
+    - If you write a form that cannot be reached, Elixir will
+      tell you
+  - Keep forms of the same function adjacent in a module
