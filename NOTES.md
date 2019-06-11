@@ -340,3 +340,34 @@
   - Keep forms of the same function adjacent in a module
 - Guard clauses use `when` predicates
   - `when` is evaluated after parameter pattern-matching is done
+  - Only accept a subset of Elixir expressions
+    - All inequality operators
+    - `and, `or`, `not`
+    - `||`, `&&`, and `!` are not allowed
+    - Join operators `++` & `< >` only if LHS is a literal
+    - Typecheck functions (like `is_integer`)
+    - `in`
+    - Other value-returning functions
+      - On page 59 of book
+      - Also in the [Getting Started Guide](http://elixir-lang.org/getting-started/case-cond-and-if.html#expressions-in-guard-clauses)
+- Default parameters
+  - Uses syntax `param // default`
+  - Fills in left-to-right, so if params are defined as
+    ```elixir
+    def my_func(p1, p2 // 2, p3 // 3, p4) do
+      ...
+    end
+    ```
+    And 3 parameters are provided, `p3` will still default to `3`
+  - Having two same-name functions with different arity will produce an
+    error, so
+    ```elixir
+    def my_func(p1, p2 // 2, p3 // 3, p4) do
+      ...
+    end
+
+    def my_func(p1, p2) do
+      ...
+    end
+    ```
+    Won't work
