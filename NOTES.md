@@ -338,3 +338,5 @@
     - If you write a form that cannot be reached, Elixir will
       tell you
   - Keep forms of the same function adjacent in a module
+- Guard clauses use `when` predicates
+  - `when` is evaluated after parameter pattern-matching is done
