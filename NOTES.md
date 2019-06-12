@@ -317,7 +317,6 @@
     4
     ```
 # Modules & Named Functions
-
 - Named functions _must_ be in modules
 - The `do...end` format is syntactical sugar for:
   ```elixir
@@ -371,3 +370,74 @@
     end
     ```
     Won't work
+- Private functions (`defp`)
+  - Can have multiple heads
+  - Cannot have a public head and any private heads
+- Pipe operator (`|>`)
+  - Chains functions
+  - The return value from the previous call is the first param to the
+    next function call
+  - Function parameters should _always_ be enclosed in parentheses with the
+    pipe operator
+- Modules
+  - Provides namespacing for functions
+  - Reference functions in module as `ModuleName.func`
+    - If in the same module, don't need to use the module name
+  - You can nest modules
+    - To call an inner module just prefix it with the outer module
+      ```elixir
+      defmodule Outer do
+        defmodule Inner do
+          def inner_func do
+          end
+        end
+
+        def outer_func do
+          inner_func
+        end
+      end
+
+      Outer.outer_func
+      Outer.Inner.inner_func
+      ```
+    - Nesting is syntactic sugar; Elixir actually puts these all at
+      the top-level and prefixes them appropriately; the above becomes:
+      ```elixir
+      defmodule Outer do
+        def outer_func do
+          Inner.inner_func
+        end
+      end
+
+      defmodule Outer.Inner do
+        def inner_func do
+        end
+      end
+      ```
+- Module directives
+  - All lexically scoped
+  - `import`: bring a module's code into the current scope so we don't
+    have to type the module name out every time
+    ```elixir
+    import Module
+    ```
+    - Also has `only` & `except` options
+  - `alias`: give a module an alias to cut down on typing
+    ```elixir
+    alias Some.Module.Here, as: ModuleHere
+    ```
+  - `require`: ensures any macros in that module are available at
+    compilation
+  - Attributes: metadata for a module
+    - Prefixed with an `@`
+    - Can only be declared at the top of a module
+    - Attributes can be redeclared
+      - The value read by a function is the last value set before
+        that function was declared
+    - Usually used for declaring constants
+- Module names
+  - Module names are just atoms
+  - Modules are prefixed with `Elixir.` by Elixir, so `IO` is really just
+    `:"Elixir.IO"`
+  - Erlang modules are referenced as atoms, like `:timer`
+    - Functions in modules are called similarly, like `:timer.tc`
