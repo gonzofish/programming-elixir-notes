@@ -483,3 +483,48 @@
   [1, 2, 3, 4, 5, 6]
   ```
 - We can also pattern match on entries in a list (see `weather.exs`)
+- List module
+  - Provides functions for operator on lists
+  - `.flatten`: transform a list of nested lists into a single-level list
+    ```shell
+    iex> List.flatten [[[1], 2], [[[3]]]]
+    [1, 2, 3]
+    ```
+  - `.foldl` & `.foldr`: reduce with direction
+    ```shell
+    iex> List.foldl [1, 2, 3], "", &("#{&1}(#{&2})")
+    "3(2(1()))"
+    iex> List.foldr [1, 2, 3], "", &("#{&1}(#{&2})")
+    "1(2(3()))"
+    ```
+  - `.replace_at`: replace at index; this is not a cheap op
+    ```shell
+    iex> List.replace_at [1, 2, 3], 2, "milk"
+    [1, 2, "milk"]
+    ```
+  - `.keyfind`: find a tuple in a list of tuples
+    ```shell
+    iex> keylist = [name: "Matt", likes: "JS", where: "NJ"]
+    [name: "Matt", likes: "JS", where: "NJ"]
+    iex> List.keyfind keylist, "JS", 1
+    {:likes, "JS"}
+    iex> List.keyfind keylist, "Elixir", 2
+    nil
+    iex> keylist = [{:name, "Matt"}, {:likes, "JS", "Elixir"}, {:where, "NJ"}]
+    [{:name, "Matt"}, {:likes, "JS", "Elixir"}, {:where, "NJ"}]
+    iex> List.keyfind keylist, "JS", 1
+    {:likes, "JS", "Elixir"}
+    iex> List.keyfind keylist, "Elixir", 2
+    {:likes, "JS", "Elixir"}
+    iex> List.keyfind keylist, "JS", 2
+    nil
+    ```
+  - `.keydelete`: remove tupeles from list of tuples for a key match
+    ```shell
+    iex> List.keydelete keylist, "Matt", 1
+    [{:likes, "JS", "Elixir"}, {:where, "NJ"}]
+    ```
+  - `.keyreplace`: remove tupeles from list of tuples for a key match
+    ```shell
+    iex> List.keyreplace keylist, :where, 0, {:where, "Deptford", "NJ"}
+    [{:name, "Matt"}, {:likes, "JS", "Elixir"}, {:where, "Deptford", "NJ"}]
