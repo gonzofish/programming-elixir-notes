@@ -441,3 +441,39 @@
     `:"Elixir.IO"`
   - Erlang modules are referenced as atoms, like `:timer`
     - Functions in modules are called similarly, like `:timer.tc`
+
+# Lists
+- List can be empty (`[]`) or be a head & a tail (`[head | tail]`)
+  - A single element list can be represent as a head & an empty list
+    ```elixir
+    [3 | []] # same as [3]
+    [2, | [3, []]] # same as [2, 3]
+    ```
+  - Pattern matching can be done `[head | tail]`:
+    ```elixir
+    iex> [h | t] = [1, 2, 3]
+    [1, 2, 3]
+    iex> h
+    1
+    iex> t
+    [2, 3]
+    ```
+- If all values in a list are printable characters, Elixir will turn them
+  into a string:
+  ```
+  iex> [99, 97, 116]
+  'cat'
+  ```
+- List length
+  - Empty list is 0
+  - Non-empty is 1 + length of tail
+  ```elixir
+  defmodule ListCounter do
+    def len([]), do: 0
+    def len([_ | tail]), do: 1 + len(tail)
+  end
+
+  MyList.len([1, 2, 3, 4]) # 4
+  MyList.len(["cat", "dog"]) # 2
+  ```
+- Look at `my-list.exs` to see some list processing examples
