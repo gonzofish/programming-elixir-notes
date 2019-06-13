@@ -528,3 +528,55 @@
     ```shell
     iex> List.keyreplace keylist, :where, 0, {:where, "Deptford", "NJ"}
     [{:name, "Matt"}, {:likes, "JS", "Elixir"}, {:where, "Deptford", "NJ"}]
+
+# Dictionary Types: Maps, Keyword Lists, Sets, & Structs
+- How do you choose between different types...ask these questions (in order):
+  #|Question|Type
+  ---|---|---
+  1.|Pattern match against contents?|Map
+  2.|Could it have repeated keys?|`Keyword` module
+  3.|Guarantee element order?|`Keyword` module
+  4.|Fixed set of fields?|Struct
+  5.|Otherwise...|Map
+- Keyword lists
+  - Normal form:
+    ```elixir
+    [style: "regular", size: 16, underline: true]
+    ```
+  - Usually used to pass options to functions
+    ```elixir
+    Example.func("pizza", style: "bold", size: 12, underline: true)
+    ```
+  - Values can be accessed by doing `klist[key]`
+  - `Keyword` & `Enum` module work with keyword lists
+- Maps
+  - Go-to dictionary type
+  - Good performance at all sizes
+  - Example:
+    ```shell
+    iex> me = %{name: "Matt", age: 34, kids: ["Ben"]}
+    %{name: "Matt", age: 34, kids: ["Ben"]}
+    ```
+  - Using the `Map` module:
+    ```shell
+    iex> Map.keys me
+    [:name, :age, :kids]
+    iex> Map.values me
+    ["Matt", 34, ["Ben"]]
+    iex> me.name
+    "Matt"
+    iex> me_less = Map.drop me, [:age, :kids]
+    %{name: "Matt"}
+    iex> Map.has_key? me_less, :kids
+    false
+    iex> me_more = Map.put me, :likes, "Programming"
+    %{name: "Matt", age: 34, kids: ["Ben"], likes: "Programming"}
+    iex> Map.keys me_more
+    [:name, :age, :kids, :likes]
+    iex> {value, update_me} = Map.pop me_more, :likes
+    {"Programming", %{name: "Matt", age: 34, kids: ["Ben"]}}
+    iex> Map.equal? me, updated_me
+    true
+    iex> Map.equal? me, me_slim
+    false
+    ```
