@@ -477,3 +477,9 @@
   MyList.len(["cat", "dog"]) # 2
   ```
 - Look at `my-list.exs` to see some list processing examples
+- The join operator (`|`) can take multiple values to the left
+  ```shell
+  iex> [1, 2, 3 | [4, 5, 6]]
+  [1, 2, 3, 4, 5, 6]
+  ```
+- We can also pattern match on entries in a list (see `weather.exs`)
