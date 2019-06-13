@@ -560,9 +560,9 @@
   - Using the `Map` module:
     ```shell
     iex> Map.keys me
-    [:name, :age, :kids]
+    [:age, :kids, :name]
     iex> Map.values me
-    ["Matt", 34, ["Ben"]]
+    [34, ["Ben"], "Matt"]
     iex> me.name
     "Matt"
     iex> me_less = Map.drop me, [:age, :kids]
@@ -572,11 +572,11 @@
     iex> me_more = Map.put me, :likes, "Programming"
     %{name: "Matt", age: 34, kids: ["Ben"], likes: "Programming"}
     iex> Map.keys me_more
-    [:name, :age, :kids, :likes]
+    [:age, :kids, :likes, :name]
     iex> {value, update_me} = Map.pop me_more, :likes
     {"Programming", %{name: "Matt", age: 34, kids: ["Ben"]}}
     iex> Map.equal? me, updated_me
     true
-    iex> Map.equal? me, me_slim
+    iex> Map.equal? me, me_less
     false
     ```
