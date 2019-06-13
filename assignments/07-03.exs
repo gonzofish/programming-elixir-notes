@@ -1,3 +1,5 @@
+# ?<character> gets the integer of the character
+# ?a = 97, ?z = 122
 defmodule Codex do
   def caesar([], _), do: []
   def caesar([head | tail], n) when head + n > ?z do
