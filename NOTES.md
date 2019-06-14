@@ -1,6 +1,6 @@
 # Programming Elixir Notes
 
-## Match operator
+## Ch 2: Match operator
 - `=` is the match operator
   ```shell
   iex> a = 1
@@ -48,7 +48,7 @@
   ** (MatchError) no match of right hand side value: 1
   ```
 
-## Basics
+## Ch 4: Basics
 - Value types:
   - Arbitrary-sized integers (`1`, `324`, `1000000`, `1_000_000`)
     - Note can be `_`-separated for readability
@@ -279,8 +279,7 @@
           # ...
     ```
 
-# Anonymous Functions
-
+# Ch 5: Anonymous Functions
 - Basics
   - Anonymous functions take form `var_name = fn ([args]) -> [body] end`
   - Anonymous functions are called with `.` after the variable name, like
@@ -316,7 +315,7 @@
     iex> a.([1, 3, 5, 7])
     4
     ```
-# Modules & Named Functions
+# Ch 6: Modules & Named Functions
 - Named functions _must_ be in modules
 - The `do...end` format is syntactical sugar for:
   ```elixir
@@ -442,7 +441,7 @@
   - Erlang modules are referenced as atoms, like `:timer`
     - Functions in modules are called similarly, like `:timer.tc`
 
-# Lists
+# Ch 7: Lists
 - List can be empty (`[]`) or be a head & a tail (`[head | tail]`)
   - A single element list can be represent as a head & an empty list
     ```elixir
@@ -529,7 +528,7 @@
     iex> List.keyreplace keylist, :where, 0, {:where, "Deptford", "NJ"}
     [{:name, "Matt"}, {:likes, "JS", "Elixir"}, {:where, "Deptford", "NJ"}]
 
-# Dictionary Types: Maps, Keyword Lists, Sets, & Structs
+# Ch 8: Dictionary Types
 - How do you choose between different types...ask these questions (in order):
   #|Question|Type
   ---|---|---
@@ -580,3 +579,104 @@
     iex> Map.equal? me, me_less
     false
     ```
+  - Pattern-matching Maps
+    - Works like you would think: `%{name: name_var} = my_map`
+    - A `MatchError` will raise if a key is attempted to be matched that is not
+      in that map
+  - Updating a map
+    - Uses the join operator: `new_map = %{old_map | key => value, ...}`
+      - But this will not add a new key to a map!
+    - `Map.put_name` will add a key to a map
+- Structs: module that wraps a limited form of a map
+  - Think of them as typed maps
+    - Fixed set of fields
+    - Pattern match by type & content
+  - Limits
+    - Keys must be atoms
+    - Do not have dict capabilities
+  - Module name is map type
+  - Example:
+    ```elixir
+    defmodule Subscriber do
+      defstruct name: "", paid: false, over_18: true
+    end
+    ```
+  - Instantiate with map-like syntax:
+    ```shell
+    iex> s1 = %Subscriber{}
+    %Subscriber{name: "", paid: false, over_18: true}
+    iex> s2 = %Subscriber{name: "Matt", paid: true}
+    %Subscriber{name: "Matt", paid: true, over_18: true}
+    iex> s2.name
+    "Matt"
+    iex> %Subscriber{s1 | name: "Sue"}
+    %Subscriber{name: "Sue", paid: false, over_18: true}
+    ```
+  - Structs are wrapped in modules so we can add functionality to them
+    ```elixir
+    defmodule Subscriber do
+      defstruct name: "", paid: false, over_18: true
+
+      def can_vote(subscriber = %Subscriber{}) do
+        subscriber.paid && subscriber.over_18
+      end
+
+      def print_badge(%Subscriber{name: name}) when name != "" do
+        IO.puts "VIP: #{name}"
+      end
+
+      def print_badge(%Subscriber{}) do
+        IO.puts "Cannot print badge, no name"
+      end
+    end
+    ```
+  - Structs can be nested
+    - Dot-notation access `my_struct.something.something_child`
+    - Updating with join operator are ugly, so Elixir has nested dictionary
+      access functions:
+      - `put_in` sets the value for a nested key
+        ```elixir
+        put_in(my_struct.someting.something_child, "Kiddo")
+        ```
+      - `update_in` sets a value for a nest key using a provided function
+        ```elixir
+        update_in(my_struct.something.something_child, &("Child: #{&1}"))
+        ```
+      - `get_in`: gets a nested value
+      - `get_and_update_in`: gets a nested value and updates it using a
+        provided function
+- `Access` module: predefined functions to act as params to `get_in`  and
+  `get_and_update_in`
+  - For lists:
+    - `all`: returns all elements in the list
+    - `at`: return element at an index
+  - For tuples:
+    - `elem`: return element at a tuple index
+  - For dictionaries:
+    - `key`: get the element at the provided key
+  - For map or keyword list:
+    - `pop`: remove entry
+- Sets: implemented using the `MapSet` module
+  ```shell
+  iex> set1 = 1..5 |> Enum.into(MapSet.new)
+  #MapSet<[1, 2, 3, 4, 5]>
+  iex> set2 = 3..8 |> Enum.into(MapSet.new)
+  #MapSet<[3, 4, 5, 6, 7, 8>]
+  iex> MapSet.member? set1, 3
+  true
+  iex> MapSet.union set1, set2
+  #MapSet<[1, 2, 3, 4, 5, 6, 7, 8]>
+  iex> MapSet.difference set1, set2
+  #MapSet<[1, 2]>
+  iex> MapSet.difference set2, set1
+  #MapSet<[6, 7, 8]>
+  iex> MapSet.intersection set1, set
+  #MapSet<[3, 4, 5]>
+  ```
+
+# Ch 9: Aside: What are Types?
+- A list, a map, or a keyword list are actual primitives
+- The respective modules `List`, `Map`, and `Keyword` provide abstractions
+  to working with those primitives
+  - A keyword list, for example, can use not only work with the `Keyword`
+    module but also the `List`, `Enum`, and `Collectable` modules
