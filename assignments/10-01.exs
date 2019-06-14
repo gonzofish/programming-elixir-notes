@@ -21,4 +21,13 @@ defmodule MEnum do
       filter(tail, func)
     end
   end
+
+  def split(collection, index), do: do_split(collection, index, 0)
+  defp do_split(collection, index, index) do
+    {[], collection}
+  end
+  defp do_split([head | tail], index, current_index) do
+    {first_half, second_half} = do_split(tail, index, current_index + 1)
+    {[head | first_half], second_half}
+  end
 end
