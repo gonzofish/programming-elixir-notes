@@ -30,4 +30,10 @@ defmodule MEnum do
     {first_half, second_half} = do_split(tail, index, current_index + 1)
     {[head | first_half], second_half}
   end
+
+  def take(collection, index), do: do_take(collection, index, 0)
+  defp do_take(_, index, index), do: []
+  defp do_take([head | tail], index, current_index) do
+    [head | do_take(tail, index, current_index + 1)]
+  end
 end
