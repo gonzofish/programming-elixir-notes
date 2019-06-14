@@ -680,3 +680,60 @@
   to working with those primitives
   - A keyword list, for example, can use not only work with the `Keyword`
     module but also the `List`, `Enum`, and `Collectable` modules
+
+# Ch 10: Enum & Stream
+- Outside of lists & maps, Elixir has other types that act as collections
+  - Ranges
+  - Files
+  - Functions (?!)
+  - Can define own through protocols
+- What makes them collections is they can be iterate through them
+  - Some also share the ability to add to them
+  - Things that can be iterated implement the `Enumerable` protocol
+- Two iteration modules
+  - `Enum`: is the primary iteration module
+  - `Stream`: like `Enum`, but processes lazily
+- `Enum`
+  - Use it to iterate, filter, combine, split, & manipulate collections
+  - `to_list <collection>`: convert a collection to a list
+  - `concat <collection_1>, <collection_2>, ...`: combine collections together
+  - `map <collection>, <func>`: create a list with entries as a function of
+    their original value
+  - Get item at position or by key or some criteria:
+    - `at <collection>, <index/key>`: get element of collection at index or of
+      the given key
+    - `filter <collection>, <func>`: get entries where `func` returns `true`
+    - `reject <collection>, <func>`: get entries where `func` returns `false`
+  - `sort <collection>[, <func>]`: sort a list using an (optional) function
+    - NOTE: use `<=` (instead of `<`) to ensure a stable sort
+  - Get maximum value
+    - `max <collection>`: get the greatest value
+    - `max_by <collection>, <func>`: get the greatest value, using `func`
+      to perform comparison
+  - Take functions
+    - `take <collection>, <number>`: grab the first `number` items of the
+      collection
+    - `take_every <collection>, <number>`: grab each `number` element of the
+      collection
+    - `take_while <collection>, <func>`: grab items while `func` returns `true`
+  - Splitting a list
+    - `split <collection>, <index>`: split the collection at the given `index`
+    - `split_while <collection>, <func>`: split a collection, putting items into
+      the first partition until `func` returns false
+  - Predicate functions
+    - `all? <collection>, <func>`: do all elements of the `collection` pass
+      `func`?
+    - `any? <collection>, <func>`: does any element of the `collection` pass
+      `func`?
+    - `member? <collection>, <value>`: is `value` a member of `collection`?
+    - `empty? <collection>`: is the `collection` empty?
+  - List combining
+    - `zip <collection_1>, <collection_2>, ...`: combine items at the same
+      position of each collection into a tuple
+    - `with_index <collection>`: transform each entry into a tuple of
+      `{<index>, <value>}`
+  - Get a single value from a collection:
+    - `reduce <collection>[, <initial>], <func>`: get a single value that
+      accumulates using the `func`; `initial` is inferred if not provided
+    - `join <collection>[, <separator>]`: join a list into a string by an
+      (optional) character
