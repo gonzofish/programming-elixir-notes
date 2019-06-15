@@ -737,3 +737,52 @@
       accumulates using the `func`; `initial` is inferred if not provided
     - `join <collection>[, <separator>]`: join a list into a string by an
       (optional) character
+- Streams: like `Enum`, but only runs steps as needed
+  - Stream functions return a specification of what is intended, sort of like
+    JavaScript Promises:
+    ```shell
+    iex> s = Stream.map [1, 3, 5, 7], &(&1 + 1)
+    #Stream<[enum: [1, 3, 5, 7], funs: [#Function<49.126435914/1 in Stream.map/2>]]>
+    ```
+  - To get the actual result, pass them to `Enum.to_list`
+    ```shell
+    iex> Enum.to_list s
+    [2, 4, 6, 8]
+    ```
+  - Streams can also be passed to other `Stream` functions
+  - Since streams are lazy, we don't always need to produce all results to get
+    to the next step in a chain:
+    ```shell
+    iex> Stream.map(1..10_000_000, &(&1 + 1)) |> Enum.take(5)
+    [2, 3, 4, 5, 6]
+    ```
+    - If we use `Enum.map/2`, it takes a few seconds; using the stream gets
+      a result immediately
+  - Streams can run on infinitely, processing as data becomes available
+  - Creating streams
+    - The Stream implementation is very complex
+    - Wrapper functions help abstract away low-level details
+  - `Stream.cycle <enumerable>`: take an enumerable and return an infinite
+    stream that runs through the enumerable's items and starts over after
+    all items are processed
+    ```shell
+    iex> Stream.cycle(~w(green white})) |>
+    ...> Stream.zip(1..5) |>
+    ...> Enum.to_list
+    [{"green", 1}, {"white", 2}, {"green", 3}, {"white", 4}, {"green", 5}]
+    ```
+  - `Stream.repeatedly <func>`: invoke the provided function each time a new
+    value is wanted
+    ```shell
+    iex> Stream.repeatedly(fn -> true end) |> Enum.take(3)
+    [true, true, true]
+    ```
+  - `Stream.iterate <start_value>, <next_func>`: returns infinite stream where
+    the first value returned is `start_value`, the next value is `next_func`
+    applied to `start_value`, third is `next_func` applied to the 2nd value,
+    and so on
+    ```shell
+    iex> Stream.iterate(0, &(&1 + 2)) |> Enum.take(6)
+    [0, 2, 4, 6, 8, 10]
+    ```
+
