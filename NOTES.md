@@ -785,4 +785,21 @@
     iex> Stream.iterate(0, &(&1 + 2)) |> Enum.take(6)
     [0, 2, 4, 6, 8, 10]
     ```
-
+  - `Stream.unfold <func>` is like `.iterate` but the `func` must return a
+    tuple containing two values: the return value from this iteration and the
+    argument to be passed to the next iteration. If the next argument is `nil`,
+    the stream ends
+    ```shell
+    iex> Stream.unfold(1, fn n -> {n, n * 2} end) |> Enum.take(15)
+    [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384]
+    ```
+  - `Stream.resource <start_func>, <process_func>, <end_func>`: like `unfold`
+    but the initial value is computed by `start_func`. The `process_func` works
+    like `iterate`'s function. And the `end_func` runs at the end of
+    enumeration
+    - For an example see `countdown.exs`
+      - This example shows how lazy Streams can deal with async resources
+        without side effects (since the functions are initialized as they) are
+        used
+      - When the stream is piped to an Enum function, that's when the values
+        are computed
