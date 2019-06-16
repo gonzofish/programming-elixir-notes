@@ -878,3 +878,102 @@
       - Hash sets
       - IO streams
 
+# Ch 11: Strings & Binaries
+- Elixir has 2 kinds of strings: double- and single-quoted
+- Commonalities between string types:
+  - Contain UTF-8 characters & escape sequences (like `\n`)
+  - Allow interpolation with `#{}`
+  - Escape special characters with `\`; so `\n` can be displayed by doing `\\n`
+  - Support heredocs
+- Heredocs
+  - Strings can span multiple lines and retain their leading & trailing spacing
+   (not `IO.write/1` is like `IO.puts/1` without auto-inserting a new line at
+   the end)
+  - Heredocs fix that, by cutting down on leading/trailing spacing and
+    newlines
+  - The code in `heredocs.exs` produces the following output:
+    ```shell
+    --start--
+
+          my
+        string
+        --end--
+    --start--
+      my
+    string
+    --end--
+    ```
+  - Here docs are used for adding docs about functions & modules
+- Sigils: alternative syntax for _some_ literals
+  - Format is: `~<letter>{<content>}[<options>]`
+  - The `{}` delimiters could also be: `[]`, `()`, `||`, `//`, `""`, and `''`
+    - Using the opening delimiter before the closing delimiter will not start
+      a new sequence, so `{a{b}` is the sequence `a{b`
+    - If the opening delimiter is `"""` or `'''`, the sequence is treated like
+      a heredoc
+  - Letters are sigil type:
+    Letter|Meaning
+    ---|---
+    `C`|Character list with no escaping or interpolation
+    `c`|Character list, escaped & interpolated like single-quote string
+    `D`|A `Date` in the `yyyy-MM-dd` format
+    `N`|A naive `DateTime` in the format `yyyy-MM-dd hh:mm:ss[.ddd]`
+    `R`|A regex with no escaping or interpolation
+    `r`|A regex with escaping & interpolation
+    `S`|A string with no escaping or interpolation
+    `s`|A string with escaping & interpolation
+    `T`|A `Time` in the `hh:mm:ss[.ddd]` format
+    `W`|A list of whitespace-delimited words, with no escaping or interpolation
+    `w`|A list of whitespace-delimited words, with escaping & interpolation
+    - `~W` & `~w` take an optional type specifier on what type to return in the
+      list
+      Option|Return type
+      a|Atoms
+      c|Character
+      s|Strings
+  - You can define your own sigils, too (explain in part III)
+- "Strings" vs 'character lists'
+  - Single-quoted strings are called character lists
+  - Double-quoted strings are strings
+  - String libraries only work with double-quoted
+- Character lists
+  - Strings represented as a list of character code integers
+  ```shell
+  iex> str = 'wombat'
+  'wombat'
+  iex> is_list str
+  true
+  iex> Enum.reverse str
+  'tamow'
+  iex> :io.format "~w~n", [str]
+  [119,111,109,98,97,116]
+  :ok
+  iex> str ++ [0]
+  [119, 111, 109, 98, 97, 116, 0]
+  ```
+    - The `:io.format/2` uses Erlang's formatting where `~w` displays each
+      character as an Erlang term (the integer) and `~n` says add a newline
+    - The joining of `str` & `[0]` adds `0` to the end of list, making it
+      unprintable (since `0` is not a valid character code), so Elixir just
+      outputs it as a list
+  - Because they're lists, character lists can use all the `List`/`Enum`
+    functions
+  - Prefixing a character with `?` will return its character code
+    ```shell
+    iex> ?a
+    97
+    iex> ?A
+    65
+    iex> ?z
+    122
+    iex> [?y]
+    'y'
+    iex> ?z + 13
+    135
+    iex> [?z + 13]
+    [135]
+    iex> [?q + 3]
+    't'
+    ```
+
+
