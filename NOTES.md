@@ -803,3 +803,78 @@
         used
       - When the stream is piped to an Enum function, that's when the values
         are computed
+- Collectable Protocol & Comprehensions
+  - Allows building of a collection by inserting in to it
+  - Usually accessed via `Enum.into` + comprehensions
+  - Streams are collectable
+  - Comprehensions make the map & filter of collections easier
+  - Comprehensions:
+    - Take 1 or more collections
+    - Extract all combinations of values from each
+    - (Optional) Filter values
+    - Generates a new collection with remaining values
+  - Comprehension syntax:
+    ```elixir
+    result = for <generator or filter>...[, into: value], do: expression
+    ```
+  - Basic comprehension examples:
+    ```shell
+    iex> for x <- [1, 2, 3, 4, 5], do: x * x
+    [1, 4, 9, 16, 25]
+    iex> for x <- [1, 2, 3, 4, 5], x < 4, do: x * x
+    [1, 4, 9]
+    ```
+  - You can declare multiple variables with multiple inputs:
+    ```shell
+    iex> for x <- [1, 2], y <- [5, 6], do: x + y
+    [6, 7, 7, 8]
+    ```
+  - Variables from earlier generators can be used in later generatros:
+    ```shell
+    iex> min_maxes = [{1,4}, {2,3}, {10, 15}]
+    [{1, 4}, {2, 3}, {10, 15}]
+    iex> for {min,max} <- min_maxes, n <- min..max, do: n
+    [1, 2, 3, 4, 2, 3, 10, 11, 12, 13, 14, 15]
+    ```
+  - Filters gatekeep: if the condition isn't met, it moves on to the next
+    entry in the collection
+    - There can be multiple filters, like there are multiple generators
+  - Comprehensions can have deconstructions
+    ```shell
+    iex> for {city, state} <- cities, do: {state, city}
+    ```
+  - Comprehensions can work on bits
+    ```shell
+    iex> for <<  ch <- "hello" >>, do: <<ch>>
+    ["h", "e", "l", "l", "o"]
+    ```
+  - Variables in a comprehension are local and do not overwrite external
+    variables:
+    ```shell
+    iex> name = "Matt"
+    "Matt"
+    iex> for name <- ["Sue", "Ben"], do: String.upcase(name)
+    ["SUE", "BEN"]
+    iex> name
+    "Matt"
+    ```
+  - By default, comprehensions will return a list the `into:` parameter
+    can be used to override this:
+    ```shell
+    iex> for x <- ~{ben, sue}, into: %{}, do: {x, String.upcase(x)}
+    %{ben: "BEN", sue: "SUE"}
+    iex> for x <- ~{ben, sue}, into: Map.new, do: {x, Stringupcase(x)}
+    %{ben: "BEN", sue: "SUE"}
+    ```
+    - The `into:` value doesn't have to be empty
+    - The `into:` values need to implement the `Collectable` protocol, which
+      includes:
+      - Lists
+      - Binaries
+      - Functions
+      - Maps
+      - Files
+      - Hash dictionaries
+      - Hash sets
+      - IO streams
+
