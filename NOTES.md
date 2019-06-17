@@ -1009,5 +1009,26 @@
     - Grapheme: a complete UTF-8 character, like `ë`
     - Codepoint: each part of the UTF-8 character, `ë` is actually
       `["e", "̈"]`
+- Binaries and pattern matching
+  - First rule of binaries: "if in doubt, specify the type of each field"
+  - Types:
+    - `binary`
+    - `bits`
+    - `bytes`
+    - `float`
+    - `integer`
+    - `utf8`
+    - `utf16`
+    - `utf32`
+  - Qualifiers:
+    - `size(n)`: field size, in bits
+    - `signed`/`unsigned`
+    - endianness: `big`, `little`, `native`
+      - Little endian: least significant element in lowest position
+      - Big endian: least significant element in highest position
+  - Hyphens (`-`) should be used to separate multiple attributes for a field
+  - Most work with binaries is to process UTF-8 strings
+    - Binary files & protocol formats utilize the above tools as well
+- String Processing with Binaries
 
 
