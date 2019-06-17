@@ -975,5 +975,39 @@
     iex> [?q + 3]
     't'
     ```
+- Binaries: represent a sequence of bits
+  - Literal format: `<< term_1, term_2, ... >>`
+    - Simplest term is a number in 0..255
+    - Numbers stored as successive bytes
+  - Getting the size of binary is as easy as:
+    - `byte_size <binary>`: gets size of binary in bytes
+    - `bit_size <binary>`: gets size of binary in bits
+  - Terms can be sized using the `size` modifier:
+    ```shell
+    iex> nary = << 1::size(2), 1::size(3) >>  # 01 001 = 9
+    <<9::size(5)>>
+    ```
+  - Binaries can contain integers, floats, and other binaries
+  - **Double-quote strings are binaries**
+    - This means characters that a charlist has trouble with, a string will not
+      ```shell
+      iex> '∂x/∂y'
+      [8706, 120, 47, 8706, 121]
+      iex> "∂x/∂y"
+      "∂x/∂y"
+      ```
+  - UTF-8 characters can take up more than 1 byte, so the length of a string and
+    the length of its binary do not _necessarily_ equal
+    ```shell
+    iex> byte_size "∂x/∂y"
+    9
+    iex> String.length "∂x/∂y"
+    5
+    ```
+- `String` module: works on double-quote strings (binaries)
+  - Has functions for working with graphemes and codepoints
+    - Grapheme: a complete UTF-8 character, like `ë`
+    - Codepoint: each part of the UTF-8 character, `ë` is actually
+      `["e", "̈"]`
 
 
