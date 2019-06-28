@@ -1031,4 +1031,74 @@
     - Binary files & protocol formats utilize the above tools as well
 - String Processing with Binaries
 
-
+# Ch 12: Control Flow
+- Elixir has a small set of control flow constructs
+  - In Elixir, the aim is to use guard clauses & small pattern-matching
+    functions to take the place of `if/then` logic
+- `if` & `unless` work inversely of each other:
+  - `if` works as it does in other languages
+    ```shell
+    iex> if 1 == 1, do: "truth!", else: "false..."
+    "truth"
+    iex> if 1 == 2, do: "truth!", else: "false..."
+    "false..."
+    ```
+    - `if...do` can be written similar to function definitions:
+      ```elixir
+      if condition do
+        "truth!"
+      else
+        "false..."
+      end
+      ```
+  - `unless` is similar to `if`
+    ```shell
+    iex> unless 1 == 1, do: "not ok :(", else: "OK!"
+    "OK!"
+    iex> unless 1 == 2, do: "not ok :(", else: "OK!"
+    "not ok :("
+    ```
+    - And it can also be written with syntactic sugar:
+      ```elixir
+      unless 1 == 2 do
+        "not ok :("
+      else
+        "OK!"
+      end
+      ```
+- `cond` is another conditional construct:
+  ```elixir
+  cond do
+    bass >= 7 ->
+      "heavy!"
+    bass > 3 ->
+      "mid-range"
+    bass >= 1 ->
+      "low"
+    true ->
+      "off"
+  end
+  ```
+  - `true ->` is a fall-through
+  - It's usually better to use functions instead of `cond` with pattern
+    matching
+- `case` is similar to `switch`:
+  ```elixir
+  case some_variable do
+    %{state: "NJ"} ->
+      "An anonymouse person from NJ!"
+    person = %{age: age} and is_number(age) and age >= 21 ->
+      "#{person.name} can drink!"
+    _ ->
+      "A young person not from NJ!"
+  end
+  ```
+- Exceptions _can_ be raised but is done far less than in other languages
+  - In Elixir, errors propogate back up to a supervising application
+  - In general, avoid using exceptions as best you can
+  - Exceptions should be used for things that should never happen
+    - For example, a known file not opening
+    - If a user enters a file name, the file not opening should be an
+      expected error
+  - Functions with a trailing `!` are ones that raise an exception, such as
+    `File.open!`
