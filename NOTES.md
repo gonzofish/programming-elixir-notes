@@ -1227,5 +1227,12 @@
       Randomized with seed 739436
       ```
       - Check this out with `git checkout ch13-passed-cli-test`
+- Step 4: Refactor the CLI Parser
+  - The `parse_args` function has two problems:
+    - It's large (by Elixir conventions)
+    - It uses conditional logic where pattern-matching function definitions
+      would do
+  - We can refactor it and our tests will make sure we didn't mess up
+  - To see the refactored code checkout `ch13-cli-refactor`
 
 
