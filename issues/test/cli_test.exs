@@ -12,7 +12,7 @@ defmodule CliTest do
   end
 
   test "returns a tuple with user, project, & count if all are provided" do
-    assert parse_args(["fake_user", "some_proj", "15"]) == {"fake_user", "some_project", 15}
+    assert parse_args(["fake_user", "some_proj", "15"]) == {"fake_user", "some_proj", 15}
   end
 
   test "returns a tuple with a default count of 4" do

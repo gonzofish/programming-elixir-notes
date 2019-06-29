@@ -1215,5 +1215,17 @@
     Randomized with seed 738404
     ```
     - Our tests fail because we're expecting the integer `15` back but getting
-      the string `"15"` back
-    - To fix this, we can use `String.to_integer`
+      the string `"15"` back (see this with `git checkout ch13-failed-cli-test`)
+    - To fix this, we can use `String.to_integer and when the tests run:
+      ```shell
+      $> mix test
+      ......
+
+      Finished in 0.2 seconds
+      2 doctests, 4 tests, 0 failures
+
+      Randomized with seed 739436
+      ```
+      - Check this out with `git checkout ch13-passed-cli-test`
+
+
