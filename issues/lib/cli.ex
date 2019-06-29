@@ -20,19 +20,25 @@ defmodule Issues.CLI do
   Returns a tuple of `{user, project, count}` or `:help`
   """
   def parse_args(argv) do
-    parse = OptionParser.parse(
+    OptionParser.parse(
       argv,
       switches: [help: :boolean],
       aliases: [h: :help]
     )
+    |> elem(1)  # grab the 2nd element returned from OptionParser.parse
+    |> do_format_args()
+  end
 
-    case parse do
-      {[help: true], _, _} -> :help
-      {_, [user, project, count], _} ->
-        {user, project, String.to_integer(count)}
-      {_, [user, project], _} ->
-        {user, project, @default_count}
-      _ -> :help
-    end
+  defp do_format_args([user, project, count]) do
+    {user, project, String.to_integer(count)}
+  end
+
+  defp do_format_args([user, project]) do
+    {user, project, @default_count}
+  end
+
+  # this covers a bad argument or -h/--help flags
+  defp do_format_args(_) do
+    :help
   end
 end
