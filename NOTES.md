@@ -1102,3 +1102,78 @@
       expected error
   - Functions with a trailing `!` are ones that raise an exception, such as
     `File.open!`
+
+# Ch 13: Organizing a Project
+- This chapter develop s a project for pulling the last _n_ issues from a
+  Github project, with these reqs:
+  - Need an HTTP client to access GitHub API
+    - URL: https://api.github.com/repos/:user/:project/issues
+  - API returns JSON, so we need a JSON-handling library
+  - Sort the data
+  - Display as a table
+- The aim is to use `mix` (package manager) and `ExUnit` (testing library)
+- Step 1: Use Mix to create project
+  - Elixir comes with `mix`
+  - `mix` runs from the command line (not from within `iex`)
+  - `mix help` shows standard tasks
+    ```shell
+    $> mix help
+    mix                   # Runs the default task (current: "mix run")
+    mix app.start         # Starts all registered apps
+    mix app.tree          # Prints the application tree
+    ...
+    ix xref              # Performs cross reference checks
+    iex -S mix            # Starts IEx and runs the default task
+    ```
+  - `mix help <command>` will give info about that command
+    ```shell
+    $> mix help deps
+    mix deps
+
+    Lists all dependencies and their status.
+    ...
+    ```
+  - **To create a new project run `mix new <project_name>`:
+    ```shell
+    $> mix new issues
+    * creating README.md
+    * creating .formatter.exs
+    * creating .gitignore
+    * creating mix.exs
+    * creating config
+    * creating config/config.exs
+    * creating lib
+    * creating lib/issues.ex
+    * creating test
+    * creating test/test_helper.exs
+    * creating test/issues_test.exs
+
+    Your Mix project was created successfully.
+    You can use "mix" to compile it, test it, and more:
+
+        cd issues
+        mix test
+
+    Run "mix help" for more commands.
+    ```
+    - This creates an `issues` directory with the above files in it from
+      wherever the command is run
+    - Files/folders created:
+      - `.formatter.exs`: used by source code formatter
+      - `.gitignore`: is a Git file for ignoring files from being comiitable
+      - `README.md`: a file for describing & documenting your project; very
+        useful with Github
+      - `mix.exs`: project configuration
+      - `config/`: application-specific configuration
+      - `lib/`: source code directory
+      - `test/`: test code directory
+  - It's a good idea to use version control, like `git`
+- Step 2: Parse the Command Line
+  - Handling command options will be in a module separate from the main code
+  - The module will be named `CLI`
+    - As part of the `Issues` project, it'll be named `Issues.CLI`
+    - Elixir conventions puts this module file at `lib/issues/cli.ex`
+  - Elixir has an option-parsing library, which this project will use
+    - `-h` and `--help` will be optional switches
+    - Anything else is an argument
+    - The library returns a tuples
