@@ -1177,3 +1177,43 @@
     - `-h` and `--help` will be optional switches
     - Anything else is an argument
     - The library returns a tuples
+- Step 3: Write Some (Basic) Tests
+  - Elixir comes with the `ExUnit` framework for testing
+  - When the project was created, `lib/issues.ex` was created with a `hello`
+    function; it also created `test/issues_test.exs` which tests that file
+  - Create a `test/cli_test.exs` file (see `issues` directory)
+    - Test file names _must_ end with `_test`
+    - We test that:
+      - `-h` & `--help` return `:help`
+      - Passing a user, project, & count returns it as a tuple:
+        `{user, project, count}`
+      - Passing a user & project returns the tuple with a default count:
+        `{user, project, 4}`
+    - `test` & `assert` are macros from `ExUnit.Case`
+      - `assert` will gather info and display it when that assertion fails
+  - To run tests use `mix test`:
+    ```shell
+    $> mix test
+    Compiling 2 files (.ex)
+    Generated issues app
+    .....
+
+      1) test returns a tuple with user, project, & count if all are provided (CliTest)
+        test/cli_test.exs:14
+        Assertion with == failed
+        code:  assert parse_args(["fake_user", "some_proj", "15"]) == {"fake_user", "some_project", 15}
+        left:  {"fake_user", "some_proj", "15"}
+        right: {"fake_user", "some_project", 15}
+        stacktrace:
+          test/cli_test.exs:15: (test)
+
+
+
+    Finished in 0.2 seconds
+    2 doctests, 4 tests, 1 failure
+
+    Randomized with seed 738404
+    ```
+    - Our tests fail because we're expecting the integer `15` back but getting
+      the string `"15"` back
+    - To fix this, we can use `String.to_integer`
