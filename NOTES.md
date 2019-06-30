@@ -1251,3 +1251,67 @@
     ```
     - Trying to pass a user & project will fail since we have no module
       named `Issues.GithubIssues`
+- Step 6: Using a Library
+  - Elixir has a lot of built-in libraries; find them using the docs at
+    https://elixir-lang.org/docs
+  - Elixir can also leverage Erlang's built-ins; find them under the
+    _Application Groups_ section at http://erlang.org/doc
+  - For other libraries, Elixir uses `hex`, at https://hex.pm
+    - If they can't be found there, use Github and/or Google
+  - To do HTTP requests, we'll use `HTTPoison`
+  - Adding HTTPoison
+    - Mix handles this by using the dependency list in `mix.exs` and running
+      `mix deps`
+    - We add `:httposion` with a version of `"~> 1.0.0"` to get HTTPoison with
+      a version >= 1.0
+    - To see this use tag `ch13-httpoison-installed`
+    - Dependencies & their status can be listed with `mix deps`:
+      ```shell
+      $> mix deps
+      * httpoison (Hex package)
+      the dependency is not available, run "mix deps.get"
+      ```
+    - Install the missing deps with `mix deps.get`:
+      ```shell
+      $> mix deps.get
+      Resolving Hex dependencies...
+      Dependency resolution completed:
+      New:
+        certifi 2.5.1
+        hackney 1.15.1
+        httpoison 1.0.0
+        idna 6.0.0
+        metrics 1.0.1
+        mimerl 1.2.0
+        parse_trans 3.3.0
+        ssl_verify_fun 1.1.4
+        unicode_util_compat 0.4.1
+      * Getting httpoison (Hex package)
+      * Getting hackney (Hex package)
+      * Getting certifi (Hex package)
+      * Getting idna (Hex package)
+      * Getting metrics (Hex package)
+      * Getting mimerl (Hex package)
+      * Getting ssl_verify_fun (Hex package)
+      * Getting unicode_util_compat (Hex package)
+      * Getting parse_trans (Hex package)
+      ```
+      - Now running `mix deps` yields better results:
+        ```shell
+        $> mix deps
+        * mimerl (Hex package) (rebar3)
+        locked at 1.0.2 (mimerl) 993f9b0e
+        the dependency build is outdated, please run "mix deps.compile"
+        * metrics (Hex package) (rebar3)
+        locked at 1.0.1 (metrics) 25f094de
+        the dependency build is outdated, please run "mix deps.compile"
+        * unicode_util_compat (Hex package) (rebar3)
+        locked at 0.3.1 (unicode_util_compat) a1f612a7
+        the dependency build is outdated, please run "mix deps.compile" ...
+        * httpoison (Hex package) (mix)
+        locked at 0.9.0 (httpoison) 68187a2d
+        the dependency build is outdated, please run "mix deps.compile"
+        ```
+      - Mix will compile the above libraries when we need them
+      - Mix also added a `deps` directory where it stores these installed
+        dependencies
