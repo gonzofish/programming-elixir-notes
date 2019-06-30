@@ -1227,12 +1227,27 @@
       Randomized with seed 739436
       ```
       - Check this out with `git checkout ch13-passed-cli-test`
-- Step 4: Refactor the CLI Parser
+- Step 4: Processing Help
   - The `parse_args` function has two problems:
     - It's large (by Elixir conventions)
     - It uses conditional logic where pattern-matching function definitions
       would do
   - We can refactor it and our tests will make sure we didn't mess up
   - To see the refactored code checkout `ch13-cli-refactor`
+- Step 5: Fetch from Github
+  - Next we need a way of processing the values returned from `pargs_args`
+    - Output help for `:help`
+    - Fetch issues for the tuple
+  - See the tag `ch13-process-help` for the code
+  - To check this code we use `mix run`:
+    ```shell
+    $> mix run -e 'Issues.CLI.run(["-h"])'
+    Compiling 2 files (.ex)
+    warning: function Issues.GithubIssues.fetch/2 is undefined (module Issues.GithubIssues is not available)
+      lib/cli.ex:55
 
-
+    Generated issues app
+    usage: issues <user> <project> [count | 4]
+    ```
+    - Trying to pass a user & project will fail since we have no module
+      named `Issues.GithubIssues`
