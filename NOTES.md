@@ -1315,3 +1315,15 @@
       - Mix will compile the above libraries when we need them
       - Mix also added a `deps` directory where it stores these installed
         dependencies
+  - Adding `GithubIssues.fetch`
+    - Add a file at `lib/github_issues.ex` to render the URL and fetch
+      data using Github's API
+    - We use HTTPoison's `get` function which will return a tuple of
+      `{:ok, response}` for a `OK` HTTP response
+    - NOTE: HTTPoison's docs tell you to use `HTTPoison.start` but
+      Elixir will do this for you
+      - Becuse it's listed as a dependency, Elixir will run it as a separate
+        application
+        - In Elixir an sub-application is similar to a library in other
+          languages
+    - The `github_issues.ex` code can be seen at tag `ch13-handle-fetch`
