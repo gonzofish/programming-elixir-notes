@@ -1327,3 +1327,16 @@
         - In Elixir an sub-application is similar to a library in other
           languages
     - The `github_issues.ex` code can be seen at tag `ch13-handle-fetch`
+- Step 7: Transforming JSON
+  - To transform the JSON, we need a library, poison
+    - Add `{:poison, "~> 3.1"}` to `mix.exs`
+    - Run `mix deps.get` to install poison
+  - Poison's `Parser.parse!` function will convert the JSON string into a
+    list of maps
+    - This will be part of the pipeline in `github_issues.ex`
+    - That pipeline also gets some refactoring for clarity
+  - In `cli.ex` we have to decode the response from `GithubIssues`
+    - This just turns any tuple with `:ok` as its first item and returns its
+      body
+    - Any other response returns an error message
+  - This code is available at `ch13-process-json`
