@@ -1349,4 +1349,13 @@
   - Update `lib/github_issues.ex` to use the new environment variable
     by using `Application.get_env`
   - These two changes can be seen with `ch13-config-url`
+  - Configs can be perscribed per-environment by using `import_config` like:
+    ```elixir
+    use Mix.Config
+
+    import_env "#{Mix.env}.exs"
+    ```
+    - In a `dev` environment, this will pull in `dev.exs`, production
+      `prod.exs`, etc.
+
 
