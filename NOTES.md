@@ -1340,3 +1340,13 @@
       body
     - Any other response returns an error message
   - This code is available at `ch13-process-json`
+- Step 8: Making the URL Configurable
+  - The URL for Github is hardcorded in `lib/github_issues.ex`
+  - Mix added a `config/` directory as part of `mix new`
+  - The file `config.exs` contains application-level config
+    - To this we add an `github_url` key with a value of
+      `"https://api.github.com"` as part of the `:issues` application
+  - Update `lib/github_issues.ex` to use the new environment variable
+    by using `Application.get_env`
+  - These two changes can be seen with `ch13-config-url`
+
