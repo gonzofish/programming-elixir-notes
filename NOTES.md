@@ -1362,3 +1362,9 @@
   - Add it to the `CLI` module with intent to refactor whenever a better
     module shows itself
   - This code (and its tests) can be seen with the tag `ch13-sort`
+- Step 10: Take the First _n_ Items
+  - Leverage `Enum.take` + `Enum.reverse`
+  - After sorting descending we have the most recent issue first
+  - We take _n_ of those most recent issues, then reverse to get the oldest
+    of those _n_ most recent issues first
+  - This code can be found using the `ch13-take-n` tag
