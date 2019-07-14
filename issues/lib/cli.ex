@@ -1,5 +1,11 @@
 defmodule Issues.CLI do
   @default_count 4
+  @headers %{
+    "created_at" => "created_at",
+    "number" => " #",
+    "title" => "title"
+  }
+  @fields ["number", "created_at", "title"]
 
   @moduledoc """
   Handle command line parsing and the dispatching to
@@ -27,7 +33,8 @@ defmodule Issues.CLI do
       switches: [help: :boolean],
       aliases: [h: :help]
     )
-    |> elem(1)  # grab the 2nd element returned from OptionParser.parse
+    # grab the 2nd element returned from OptionParser.parse
+    |> elem(1)
     |> do_format_args()
   end
 
@@ -45,9 +52,10 @@ defmodule Issues.CLI do
   end
 
   def process(:help) do
-    IO.puts """
+    IO.puts("""
     usage: issues <user> <project> [count | #{@default_count}]
-    """
+    """)
+
     System.halt(0)
   end
 
@@ -59,11 +67,12 @@ defmodule Issues.CLI do
   end
 
   defp decode_response({:ok, body}), do: body
+
   defp decode_response({:error, error}) do
-    IO.puts "Error fetching from Github: #{error["message"]}"
+    IO.puts("Error fetching from Github: #{error["message"]}")
     System.halt(2)
   end
-  
+
   def sort_descending(issues) do
     issues
     |> Enum.sort(fn issue1, issue2 ->
@@ -71,9 +80,50 @@ defmodule Issues.CLI do
     end)
   end
 
-  def last(recent_issues, count) do
+  defp last(recent_issues, count) do
     recent_issues
     |> Enum.take(count)
     |> Enum.reverse()
+  end
+
+  def format_table(last_issues) do
+    # - fields we need: number, created_at, title
+    field_widths = get_field_widths([@headers | last_issues])
+
+    # print headers, using padding
+    header = do_format_row(@headers, field_widths)
+    separator = do_format_separator(field_widths)
+    rows = Enum.map(last_issues, &do_format_row(&1, field_widths))
+
+    [header | [separator | rows]]
+    |> Enum.join("\n")
+  end
+
+  defp get_field_widths(items) do
+    @fields
+    |> Enum.reduce(%{}, fn field, maxs ->
+      field_values = items |> Enum.map(fn item -> do_get_str_len(item[field]) end)
+      Map.put(maxs, field, Enum.max(field_values))
+    end)
+  end
+
+  defp do_get_str_len(value) do
+    String.length("#{value}")
+  end
+
+  defp do_format_row(row, field_widths) do
+    @fields
+    |> Enum.map(fn field ->
+      value = row[field]
+
+      String.pad_trailing("#{value}", field_widths[field])
+    end)
+    |> Enum.join(" | ")
+  end
+
+  defp do_format_separator(field_widths) do
+    @fields
+    |> Enum.map(&String.duplicate("-", field_widths[&1]))
+    |> Enum.join("-+-")
   end
 end
