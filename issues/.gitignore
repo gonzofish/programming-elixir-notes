@@ -22,3 +22,5 @@ erl_crash.dump
 # Ignore package tarball (built via "mix hex.build").
 issues-*.tar
 
+# Don't commit the mix escript.build file
+/issues
