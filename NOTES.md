@@ -1385,3 +1385,36 @@
       then pad the other rows and header of that column to that length
     - Once we have the longest string, it's just padding each column
   - My solution can be found at the tag `ch13-formatted-table`
+- Step 12: Make it Command-Line Executable
+  - We can run the code via Mix:
+    ```shell
+    $> mix run -e 'Issues.CLI.run(["elixir-lang", "elixir"])'
+    Compiling 1 file (.ex)
+    #   | created_at           | title
+    -----+----------------------+--------------------------------------------------------------------
+    9212 | 2019-07-10T17:38:55Z | Logger.Utils.truncate_n/2 should handle invalid log data gracefully
+    9216 | 2019-07-11T13:36:22Z | reraise/2 with invalid second argument silently fails
+    9218 | 2019-07-12T17:55:02Z | Relative paths in `elixirc_paths` are not evaluated correctly
+    9222 | 2019-07-13T15:37:56Z | Use Module.has_attribute?/2 in ExUnit.Case
+    ```
+  - Mix can also package the code to run using Erlang's _escript_ utility
+    - _escript_ looks for the `mix.exs` file to return an `escript` keyword
+      list as config settings
+      - `main_module` indicates where to start running (`Issues.CLI`)
+      - We'll need to add a `main` method to `lib/cli.ex`
+    - To package it, run:
+      ```shell
+      $> mix escript.build
+      ```
+    - The program can be run from the command-line as `issues`:
+      ```shell
+      $> ./issues pragdave earmark 4
+      num | created_at           | title
+      ----+----------------------+------------------------------------------
+      159 | 2017-09-21T10:01:24Z | Block level HTML ... messes up formatting
+      161 | 2017-10-11T09:12:59Z | Be clear in README ... GFM are supported.
+      162 | 2017-10-11T16:59:50Z | Working on #161, looking at rendering
+      171 | 2017-12-03T11:08:40Z | Fix typespecs
+      ```
+    - The code added to `mix.exs` & `lib/cli.ex` can be found at the tag
+      `ch13-executable`
