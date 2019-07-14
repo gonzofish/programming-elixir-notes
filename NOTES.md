@@ -1379,8 +1379,9 @@
 893 | 2013-03-21T06:23:00Z | mix test time reports
 898 | 2013-03-23T19:19:08Z | Add mix compile --warnings-as-errors
 ```
-    - We need the fields: number, created_at, and title
+  - What's needed to accomplish this:
+    - The fields: number, created_at, and title
     - For each column we'll need to identify the longest string,
       then pad the other rows and header of that column to that length
     - Once we have the longest string, it's just padding each column
-    - My solution can be found at the tag `ch13-formatted-table`
+  - My solution can be found at the tag `ch13-formatted-table`
