@@ -60,10 +60,11 @@ defmodule Issues.CLI do
   end
 
   def process({user, project, count}) do
-    Issues.GithubIssues.fetch(user, project)
+    GithubIssues.fetch(user, project)
     |> decode_response()
     |> sort_descending()
     |> last(count)
+    |> print_table()
   end
 
   defp decode_response({:ok, body}), do: body
@@ -84,6 +85,11 @@ defmodule Issues.CLI do
     recent_issues
     |> Enum.take(count)
     |> Enum.reverse()
+  end
+
+  def print_table(issues) do
+    format_table(issues)
+    |> IO.puts()
   end
 
   def format_table(last_issues) do
