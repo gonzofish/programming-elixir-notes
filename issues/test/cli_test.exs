@@ -4,7 +4,7 @@ defmodule CliTest do
 
   # so we don't have to do Issues.CLI.parse_args
   # everytime
-  import Issues.CLI, only: [parse_args: 1]
+  import Issues.CLI, only: [parse_args: 1, sort_descending: 1]
 
   test "returns :help for -h & --help switches" do
     assert parse_args(["-h", "pizza"]) == :help
@@ -17,5 +17,19 @@ defmodule CliTest do
 
   test "returns a tuple with a default count of 4" do
     assert parse_args(["userx", "projectx"]) == {"userx", "projectx", 4}
+  end
+
+  test "sort descending by `created_at` correctly" do
+    result = ["c", "a", "b"]
+      |> fake_created_ats()
+      |> sort_descending()
+    issues = for issue <- result, do: Map.get(issue, "created_at")
+
+    assert issues === ~w{c b a}
+  end
+
+  defp fake_created_ats(created_ats) do
+    for created_at <- created_ats,
+      do: %{"created_at" => created_at, "other_data" => "other_data#{created_at}"}
   end
 end
