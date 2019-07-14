@@ -1357,5 +1357,8 @@
     ```
     - In a `dev` environment, this will pull in `dev.exs`, production
       `prod.exs`, etc.
-
-
+- Step 9: Sorting the Results
+  - Elixir's `sort/2` will make sorting on `created_at` a cinch
+  - Add it to the `CLI` module with intent to refactor whenever a better
+    module shows itself
+  - This code (and its tests) can be seen with the tag `ch13-sort`
