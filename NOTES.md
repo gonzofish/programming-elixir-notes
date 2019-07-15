@@ -1418,3 +1418,13 @@
       ```
     - The code added to `mix.exs` & `lib/cli.ex` can be found at the tag
       `ch13-executable`
+- Step 13: Logging
+  - Mix starts up the logger with `extra_applications: [:logger]` in the
+    `mix.exs` file
+  - Supports 4 levels: `debug`, `info`, `warn`, & `error`
+  - Logging level can be done a compile time using the
+    `compile_time_purge_level` config option
+    - Logs below the set level won't be compiled into code
+  - Logging can be set at run time via `Logger.configure`
+    - This cannot include levels excluded at compile time
+  - The code with some logging can be seen with the tag `ch13-logging`
