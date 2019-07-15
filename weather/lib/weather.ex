@@ -12,7 +12,19 @@ defmodule Weather do
       :world
 
   """
-  def hello do
-    :world
+  def main(argv) do
+    argv
+    |> CliParser.parse()
+    |> NoaaWeather.fetch()
+    |> _format_output()
+    |> IO.puts()
+  end
+
+  defp _format_output({:ok, weather}) do
+    OutputFormatter.format(weather)
+  end
+
+  defp _format_output({_, message}) do
+    message
   end
 end
