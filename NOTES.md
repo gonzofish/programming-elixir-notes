@@ -1443,5 +1443,5 @@
     ```shell
     $> mix docs
     ```
-  - To view docs output look at `docs/index.html`
+  - To view docs output look at `doc/index.html`
   - This code can be seen with the `ch13-docs` tag
