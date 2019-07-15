@@ -4,6 +4,8 @@ defmodule Weather.MixProject do
   def project do
     [
       app: :weather,
+      escript: escript_config(),
+      name: "NOAA Weather",
       version: "0.1.0",
       elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
@@ -23,6 +25,12 @@ defmodule Weather.MixProject do
     [
       {:httpoison, "~> 1.0.0"},
       {:sweet_xml, "~> 0.6.6"}
+    ]
+  end
+
+  defp escript_config do
+    [
+      main_module: Weather
     ]
   end
 end

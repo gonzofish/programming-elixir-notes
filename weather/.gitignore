@@ -23,3 +23,5 @@ erl_crash.dump
 weather-*.tar
 
 .elixir_ls
+
+/weather
