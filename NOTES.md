@@ -1445,3 +1445,8 @@
     ```
   - To view docs output look at `doc/index.html`
   - This code can be seen with the `ch13-docs` tag
+
+# Ch 14: Tooling
+- Elixir has a pretty good built-in tooling
+- IEx can be used to debug code
+  -
