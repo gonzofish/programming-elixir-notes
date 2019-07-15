@@ -1,5 +1,9 @@
 defmodule CliParser do
+  require Logger
+
   def parse(argv) do
+    Logger.debug("Parsing arguments from user")
+
     OptionParser.parse(
       argv,
       switches: [help: :boolean],
@@ -12,6 +16,8 @@ defmodule CliParser do
   defp _format_args([code]), do: code
 
   defp _format_args(_) do
+    Logger.info("User passed in a help flag or misused the app")
+
     IO.puts("""
     Fetch Current NOAA Weather conditions by location code
 

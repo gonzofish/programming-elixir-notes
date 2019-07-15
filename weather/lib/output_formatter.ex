@@ -1,19 +1,14 @@
 defmodule OutputFormatter do
+  require Logger
+
   def format(weather) do
     output_fields = _get_output_fields()
+    max_label_length = _find_max_length(output_fields)
 
-    max_label_width =
-      output_fields
-      |> Enum.filter(fn [value | _] -> value != nil end)
-      |> Enum.map(fn [value | _] -> String.length("#{value}") end)
-      |> Enum.max()
+    Logger.debug("Max label length: #{max_label_length}")
 
-    rows =
-      output_fields
-      |> Enum.map(&_pad_label(&1, max_label_width))
-      |> Enum.map(&_format_field(weather, &1))
-
-    rows
+    output_fields
+    |> Enum.map(&_format_field(weather, &1, max_label_length))
     |> Enum.join("\n")
   end
 
@@ -72,12 +67,26 @@ defmodule OutputFormatter do
     ]
   end
 
-  defp _format_field(weather, [nil | value_fields]) do
+  defp _find_max_length(output_fields) do
+    output_fields
+    |> Enum.filter(fn [value | _] -> value != nil end)
+    |> Enum.map(fn [value | _] -> String.length("#{value}") end)
+    |> Enum.max()
+  end
+
+  defp _format_field(weather, [nil | value_fields], _) do
+    Logger.debug("Formatting value without a label")
     _format_value(weather, value_fields)
   end
 
-  defp _format_field(weather, [label | value_fields]) do
-    "#{label} #{_format_value(weather, value_fields)}"
+  defp _format_field(weather, [label | value_fields], max_length) do
+    Logger.debug("Formatting value for \"#{label}\"")
+    "#{_pad_label(label, max_length)} #{_format_value(weather, value_fields)}"
+  end
+
+  defp _pad_label(label, max_length) when is_binary(label) do
+    Logger.debug("Padding label \"#{label}\" to #{max_length}")
+    String.pad_leading(label, max_length)
   end
 
   defp _format_value(weather, [input_fields]) do
@@ -92,16 +101,5 @@ defmodule OutputFormatter do
     input_fields
     |> Enum.map(&Keyword.get(weather, &1))
     |> formatter.()
-  end
-
-  defp _pad_label([label | other_args], max_width)
-       when is_binary(label) and is_integer(max_width) do
-    new_label = String.pad_leading(label, max_width)
-
-    [new_label | other_args]
-  end
-
-  defp _pad_label(args, _) do
-    args
   end
 end
