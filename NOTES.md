@@ -1427,4 +1427,8 @@
     - Logs below the set level won't be compiled into code
   - Logging can be set at run time via `Logger.configure`
     - This cannot include levels excluded at compile time
+  - At the top of a module, include Logger with
+    ```elixir
+    require Logger
+    ```
   - The code with some logging can be seen with the tag `ch13-logging`
