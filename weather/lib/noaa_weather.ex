@@ -3,7 +3,9 @@ defmodule NoaaWeather do
 
   @fields [
     {"dewpoint_string", :dewpoint},
+    {"latitude", :latitude},
     {"location", :location},
+    {"longitude", :longitude},
     {"observation_time_rfc822", :last_updated},
     {"pressure_in", :altimeter},
     {"pressure_mb", :msl_pressure},
