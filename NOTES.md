@@ -1432,3 +1432,16 @@
     require Logger
     ```
   - The code with some logging can be seen with the tag `ch13-logging`
+- Step 14: Documentation
+  - Elixir uses ExDoc
+    - ExDoc requires some C to compile the first time
+  - It requires a Markdown-to-HTML converter (the author maintains `earmark`)
+  - Add `ex_doc` & `earmark` to  dependencies
+    - Also add a project `name` & `source_url`
+    - Don't forget `mix deps.get`
+  - To generate docs just run:
+    ```shell
+    $> mix docs
+    ```
+  - To view docs output look at `docs/index.html`
+  - This code can be seen with the `ch13-docs` tag
