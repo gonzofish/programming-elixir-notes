@@ -1449,4 +1449,40 @@
 # Ch 14: Tooling
 - Elixir has a pretty good built-in tooling
 - IEx can be used to debug code
-  -
+  - The example file `buggy.exs` tries to decode a MIDI file header but
+    has a bug in it
+    - The error is in how value are passed to `_decode`
+    - We can use the sample MIDI header:
+      ```elixir
+      header = << 0, 1, 0, 8, 0, 120 >>
+      ```
+  - IEx.pry can be used to input a breakpoint (similar to `debugger` in JS):
+    ```elixir
+    require IEx; IEx.pry
+    ```
+    - We need to require `IEx` because `pry` is a macro
+    - When the breakpoint hits we go into pry mode:
+      ```shell
+      iex(5)> Buggy.parse_header header
+      Break reached: Buggy.parse_header/1 (examples/buggy.exs:8)
+
+          6:       >>) do
+          7:     require IEx
+          8:     IEx.pry()
+          9:
+        10:     IO.puts("format: #{format}")
+
+      pry(1)>
+      ```
+    - Pry mode keeps the context so we can fix our code in-place
+    - Calling `binding` shows local variables:
+      ```shell
+      pry(1)> binding
+      [division: <<0, 120>>, format: 1, tracks: 8]
+      ```
+    - You can recompile by doing `r <module name>`
+    - Then, in pry mode, running `continue`
+  - `IEx` also provides a `break!` function
+    - `breaks` will show any breakpoints
+  - Breakpoints can only be used on public functions
+
