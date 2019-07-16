@@ -1520,5 +1520,12 @@
         - `mix coveralls` will do command-line output of coverage
         - `mix coveralls.details` is more detailed output in the command-line
         - `mix coveralls.html` is HTML output
-- Code Dependencies
+- `mix xref` provides a means of accessing info on dependencies and how
+  modules in a project interact
+- Erlang's server-monitoring can be accessed via `:observer.start/0` and
+  provides lots of insights on running applications and processes, memory
+  allocation, and more
+- `mix format` leverages the Elixir team's formatting guidelines, but it isn't
+  a requirement to use
+- There are more tools, but the book just touches on the above
 
