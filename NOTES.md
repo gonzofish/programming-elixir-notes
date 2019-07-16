@@ -1,6 +1,9 @@
+
 # Programming Elixir Notes
 
-## Ch 2: Match operator
+## Part I: Conventional Programming
+
+### Ch 2: Match operator
 - `=` is the match operator
   ```shell
   iex> a = 1
@@ -48,7 +51,7 @@
   ** (MatchError) no match of right hand side value: 1
   ```
 
-## Ch 4: Basics
+### Ch 4: Basics
 - Value types:
   - Arbitrary-sized integers (`1`, `324`, `1000000`, `1_000_000`)
     - Note can be `_`-separated for readability
@@ -279,7 +282,7 @@
           # ...
     ```
 
-# Ch 5: Anonymous Functions
+### Ch 5: Anonymous Functions
 - Basics
   - Anonymous functions take form `var_name = fn ([args]) -> [body] end`
   - Anonymous functions are called with `.` after the variable name, like
@@ -315,7 +318,7 @@
     iex> a.([1, 3, 5, 7])
     4
     ```
-# Ch 6: Modules & Named Functions
+### Ch 6: Modules & Named Functions
 - Named functions _must_ be in modules
 - The `do...end` format is syntactical sugar for:
   ```elixir
@@ -441,7 +444,7 @@
   - Erlang modules are referenced as atoms, like `:timer`
     - Functions in modules are called similarly, like `:timer.tc`
 
-# Ch 7: Lists
+### Ch 7: Lists
 - List can be empty (`[]`) or be a head & a tail (`[head | tail]`)
   - A single element list can be represent as a head & an empty list
     ```elixir
@@ -528,7 +531,7 @@
     iex> List.keyreplace keylist, :where, 0, {:where, "Deptford", "NJ"}
     [{:name, "Matt"}, {:likes, "JS", "Elixir"}, {:where, "Deptford", "NJ"}]
 
-# Ch 8: Dictionary Types
+### Ch 8: Dictionary Types
 - How do you choose between different types...ask these questions (in order):
   #|Question|Type
   ---|---|---
@@ -674,14 +677,14 @@
   #MapSet<[3, 4, 5]>
   ```
 
-# Ch 9: Aside: What are Types?
+### Ch 9: Aside: What are Types?
 - A list, a map, or a keyword list are actual primitives
 - The respective modules `List`, `Map`, and `Keyword` provide abstractions
   to working with those primitives
   - A keyword list, for example, can use not only work with the `Keyword`
     module but also the `List`, `Enum`, and `Collectable` modules
 
-# Ch 10: Enum & Stream
+### Ch 10: Enum & Stream
 - Outside of lists & maps, Elixir has other types that act as collections
   - Ranges
   - Files
@@ -878,7 +881,7 @@
       - Hash sets
       - IO streams
 
-# Ch 11: Strings & Binaries
+### Ch 11: Strings & Binaries
 - Elixir has 2 kinds of strings: double- and single-quoted
 - Commonalities between string types:
   - Contain UTF-8 characters & escape sequences (like `\n`)
@@ -1031,7 +1034,7 @@
     - Binary files & protocol formats utilize the above tools as well
 - String Processing with Binaries
 
-# Ch 12: Control Flow
+### Ch 12: Control Flow
 - Elixir has a small set of control flow constructs
   - In Elixir, the aim is to use guard clauses & small pattern-matching
     functions to take the place of `if/then` logic
@@ -1103,7 +1106,7 @@
   - Functions with a trailing `!` are ones that raise an exception, such as
     `File.open!`
 
-# Ch 13: Organizing a Project
+### Ch 13: Organizing a Project
 - This chapter develop s a project for pulling the last _n_ issues from a
   Github project, with these reqs:
   - Need an HTTP client to access GitHub API
@@ -1446,7 +1449,7 @@
   - To view docs output look at `doc/index.html`
   - This code can be seen with the `ch13-docs` tag
 
-# Ch 14: Tooling
+### Ch 14: Tooling
 - Elixir has a pretty good built-in tooling
 - IEx can be used to debug code
   - The example file `buggy.exs` tries to decode a MIDI file header but
@@ -1529,3 +1532,6 @@
   a requirement to use
 - There are more tools, but the book just touches on the above
 
+## Part II: Conccurent Programming
+
+### Ch 15: Working with Multiple Processes
