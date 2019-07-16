@@ -1496,4 +1496,29 @@
       - `setup_all` is like `beforeAll`
       -  `setup` returns a fixture which is passed as a second parameter to
         tests
+  - Property-based testing libraries
+    - Instead of creating fixtures, you can test properties that can then
+      be checked
+    - Example libraries: StreamData, Quixir
+    - Provide macros/functions for generating faux data that can then be
+      tested against conditions
+  - The `excoveralls` library can be used to do test coverage
+    - Add properties to `project` portion of `mix.exs`:
+      - Set ExCoveralls as the testing coverage tool:
+        ```elixir
+        test_coverage: [tool: ExCoveralls]
+        ```
+      - Add CLI arguments:
+        ```elixir
+        preferred_cli_env: [
+          "coveralls": :test,
+          "coveralls.detail": :test,
+          "coveralls.html": :test,
+          "coveralls.post": :test,
+        ]
+        ```
+        - `mix coveralls` will do command-line output of coverage
+        - `mix coveralls.details` is more detailed output in the command-line
+        - `mix coveralls.html` is HTML output
+- Code Dependencies
 
