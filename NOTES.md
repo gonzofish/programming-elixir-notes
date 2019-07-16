@@ -1485,4 +1485,15 @@
   - `IEx` also provides a `break!` function
     - `breaks` will show any breakpoints
   - Breakpoints can only be used on public functions
+- Testing
+  - ExDoc provides a `doctest`
+    - `doctest` extracts IEx sessions in `@doc` strings and runs them like
+      tests against their functions
+    - `doctest` can help keep comments maintained
+  - ExDoc provides more macros
+    - `describe` groups related tests
+    - `setup` provides common fixture creation
+      - `setup_all` is like `beforeAll`
+      -  `setup` returns a fixture which is passed as a second parameter to
+        tests
 
