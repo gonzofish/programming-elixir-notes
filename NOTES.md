@@ -1535,3 +1535,40 @@
 ## Part II: Conccurent Programming
 
 ### Ch 15: Working with Multiple Processes
+- Elixir uses an actor model for concurrency
+  - Each actor is an independent process
+  - `spawn` new processes
+  - `send` messages
+  - `receive` messages
+- Uses Erlang process support, not OS processes
+- Comes in multiple varities, two simplest run anonymous or named functions
+- Calling `spawn` returns a PID
+  - When a process is spawned, it's just known it will run, not _when_ it
+    will run
+- `send` takes a PID and the message to send (called a _term_)
+- Messages are read used `receive` which acts similar to `case`
+  ```elixir
+  receive do
+    {pid, message} ->
+      # some action
+  end
+  ```
+  - A `receive` ends after it's called
+  - `after <time>` is used to do something if a message isn't received in
+    `<time>` milliseconds
+  - Using recursion will make `receive` listen indefinitely
+    - Elixir uses tail-call optimization to prevent adding a new function
+      call to the stack
+    - The recursive call _must_be the last thing to happen
+- Elixir can spawn processes fast, the `examples/chain.exs` file spawned
+  at the following speeds (on a 2013 Macbook Air with a 1.3 GHz i5 & 8 GB of
+  memory):
+  Processes|Execution time (in milliseconds)
+  ---|---
+  10|5.3
+  100|5.6
+  1_000|12
+  10_000|81
+  100_000|777 (0.777 s)
+  400_000|2_677 (2.7 s)
+  1_000_000|7_566 (7.5 s)
